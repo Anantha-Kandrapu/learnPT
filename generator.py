@@ -30,14 +30,14 @@ class RNN(nn.Module):
     def init_hidden(self, batch_size):
         hidden = torch.zeros(self.num_layers, batch_size, self.hidden_size).to(device)
         cell = torch.zeros(self.num_layers, batch_size, self.hidden_size).to(device)
-        # print("f(Hidden Size {hidden.shape})")
+        # print(f"Hidden Size {hidden.shape}")
         return hidden, cell
 
 
 class Generator:
     def __init__(self) -> None:
         self.chunk_len = 250
-        self.num_epochs = 5000
+        self.num_epochs = 1
         self.batch_size = 1
         self.print_every = 50
         self.hidden_size = 256
@@ -108,10 +108,12 @@ class Generator:
 
             if epoch % self.print_every == 0:
                 print(self.generate())
-                print("f(loss : {loss})")
+                print(f"loss: {loss}")
 
             writer.add_scalar("Training loss", loss, global_step=epoch)
+            optimizer.zero_grad()
 
 
 gennames = Generator()
 gennames.train()
+
